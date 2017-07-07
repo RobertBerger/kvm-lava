@@ -1,0 +1,7 @@
+{% extends 'beaglebone-black.jinja2' %}
+
+{% set usb_uuid = 'usb-SanDisk_Ultra_20060775320F43006019-0:0' %}
+{% set connection_command = "/usr/local/bin/console bbb07" %}
+{% set hard_reset_command = "/usr/local/bin/remote_power bbb07 cycle" %}
+{% set power_off_command = "/usr/local/bin/remote_power bbb07 off" %}
+{% set power_on_command = "/usr/local/bin/remote_power bbb07 on" %}
