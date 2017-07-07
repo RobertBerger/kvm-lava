@@ -1,0 +1,37 @@
+device_type: beaglebone-black
+job_name: bbb-test-1
+
+timeouts:
+  job:
+    minutes: 6
+  action:
+    minutes: 2
+priority: medium
+visibility: public
+
+actions:
+- deploy:
+    timeout:
+      minutes: 3
+    to: tmpfs
+    images:
+        kernel:
+          image_arg: -kernel {kernel} -append "console=ttyS0 root=/dev/vda rw"
+          url: file:///opt/image/kernel.bin
+        rootfs:
+          image_arg: -drive format=raw,file={rootfs},if=virtio
+          url: file:///opt/image/fs.ext4
+    os: yocto
+    root_partition: 1
+
+- boot:
+    method: u-boot
+    timeout:
+      minutes: 2
+    media: tmpfs
+    prompts:
+    - "oot@multi-v7-ml:"
+    auto_login:
+      login_prompt: "login:"
+      username: root
+

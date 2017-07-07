@@ -1,0 +1,39 @@
+device_type: qemu
+job_name: qemu-x86-test
+
+timeouts:
+  job:
+    minutes: 6
+  action:
+    minutes: 2
+priority: medium
+visibility: public
+
+context:
+  arch: i386
+
+actions:
+- deploy:
+    timeout:
+      minutes: 3
+    to: tmpfs
+    images:
+        kernel:
+          image_arg: -kernel {kernel} -append "console=ttyS0 root=/dev/vda rw"
+          url: file:///opt/image/kernel.bin
+        rootfs:
+          image_arg: -drive format=raw,file={rootfs},if=virtio
+          url: file:///opt/image/fs.ext4
+    os: debian
+    root_partition: 1
+
+- boot:
+    method: qemu
+    timeout:
+      minutes: 2
+    media: tmpfs
+    prompts:
+    - "root@debian:"
+    auto_login:
+      login_prompt: "login:"
+      username: root

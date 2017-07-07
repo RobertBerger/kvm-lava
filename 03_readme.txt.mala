@@ -90,6 +90,7 @@ lava-server manage devices list
 lava-server manage devices add --device-type kvm kvm01 --worker ${HOSTNAME}.res.training
 lava-server manage devices list
 
+<<<<<<< HEAD
 =======
 3) add bbb07
 
@@ -146,4 +147,6 @@ cd /etc/lava-server/dispatcher-config/devices/
 cp bbb07.jinja2 bbb06.jinja2
 
 and modify it
+
+>>>>>>> 6e8655847391ed251e8918e9abb855e8d67e9e33
 
