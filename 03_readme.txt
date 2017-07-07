@@ -90,4 +90,60 @@ lava-server manage devices list
 lava-server manage devices add --device-type kvm kvm01 --worker ${HOSTNAME}.res.training
 lava-server manage devices list
 
+3) add bbb07
+
+lava-server manage device-types list -a | grep beaglebone-black
+lava-server manage device-types add beaglebone-black
+lava-server manage device-types list
+
+lava-server manage devices list
+lava-server manage devices add --device-type beaglebone-black bbb07 --worker ${HOSTNAME}.res.training
+lava-server manage devices list
+
+There is:
+
+/etc/lava-server/dispatcher-config/device-types/beaglebone-black.jinja2
+which extends
+/etc/lava-server/dispatcher-config/device-types/base-uboot.jinja2
+which extends
+/etc/lava-server/dispatcher-config/device-types/base.jinja2
+
+And we try to extend beaglebone-black.jinja2 with our own stuff:
+
+cd /etc/lava-server/dispatcher-config/devices/
+vim bbb07.jinja2
+
+{% extends 'beaglebone-black.jinja2' %}
+
+{% set usb_uuid = 'usb-SanDisk_Ultra_20060775320F43006019-0:0' %}
+{% set connection_command = "telnet localhost 6000" %}
+{% set hard_reset_command = "/usr/bin/pduclient --daemon localhost --hostname pdu --command reboot --port 08" %}
+{% set power_off_command = "/usr/bin/pduclient --daemon localhost --hostname pdu --command off --port 08" %}
+{% set power_on_command = "/usr/bin/pduclient --daemon localhost --hostname pdu --command on --port 08" %}
+
+modified to something like:
+
+{% extends 'beaglebone-black.jinja2' %}
+
+{% set usb_uuid = 'usb-SanDisk_Ultra_20060775320F43006019-0:0' %}
+{% set connection_command = "/usr/local/bin/console bbb07" %}
+{% set hard_reset_command = "/usr/local/bin/remote_power bbb07 cycle" %}
+{% set power_off_command = "/usr/local/bin/remote_power bbb07 off" %}
+{% set power_on_command = "/usr/local/bin/remote_power bbb07 on" %}
+
+4) add bbb06
+
+lava-server manage device-types list -a | grep beaglebone-black
+lava-server manage device-types add beaglebone-black
+lava-server manage device-types list
+
+lava-server manage devices list
+lava-server manage devices add --device-type beaglebone-black bbb06 --worker ${HOSTNAME}.res.training
+lava-server manage devices list
+
+cd /etc/lava-server/dispatcher-config/devices/
+cp bbb07.jinja2 bbb06.jinja2
+
+and modify it
+
 

@@ -1,0 +1,23 @@
+metadata:
+  name: passfail
+  format: "Lava-Test-Shell Test Definition 1.0"
+  description: "A simple passfail test for demo."
+  os:
+    - openembedded
+  devices:
+    - beaglebone-black
+    - origen
+    - panda
+  environment:
+    - lava-test-shell
+
+params:
+  TEST_1: pass
+
+run:
+  steps:
+    - echo "test-1: $TEST_1"
+    - echo "test-2: fail"
+
+parse:
+  pattern: "(?P<test_case_id>.*-*):\\s+(?P<result>(pass|fail))"
